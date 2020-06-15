@@ -1,7 +1,6 @@
-const request = require('request')
-const geo = require('./geocode.js')
-const weather = require('./forecast.js')
+const weather = require('./weather')
 
+// Get location from user
 let location = process.argv[2]
 if (process.argv.length > 3) {
     for (let i = 3; i < process.argv.length; i++) {
@@ -9,14 +8,6 @@ if (process.argv.length > 3) {
     }
 }
 
-geo.geocode(location, (error, data) => {
-    if (!data) {
-       console.log('Could not retrieve weather data. Please try a different search.')
-       return
-    }
-    const locale = data.location
-    weather.forecast(data.latitude, data.longitude, (error, data) => {
-        console.log('Weather for ' + locale + '\n\nForecast: ' + data.forecast + '\nTemperature: ' + data.temperature + '\nFeels Like: ' + data.feels)
-    })
-})
+// Fetch weather data and print to console
+weather.getWeather(location, (error, data) => console.log(data))
 
